@@ -7,7 +7,7 @@ const Logo = () => {
     <Image
       src={"/images/logo.webp"}
       alt="Logo"
-      className="hidden md:block cursor-pointer"
+      className="hidden md:block cursor-pointer object-contain"
       width={100}
       height={100}
     />
