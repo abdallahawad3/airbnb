@@ -1,21 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 interface IRegisterState {
   isOpen: boolean;
+  loading: boolean;
 }
 
 const initialState: IRegisterState = {
   isOpen: false,
+  loading: false,
 };
 
 export const registerSlice = createSlice({
   name: "register",
   initialState,
   reducers: {
-    onClose: (state) => {
-      state.isOpen = false;
-    },
     onOpen: (state) => {
       state.isOpen = true;
+    },
+    onClose: (state) => {
+      state.isOpen = false;
     },
   },
 });
