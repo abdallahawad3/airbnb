@@ -3,6 +3,9 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import Modal from "@/components/models/Modal";
+import { Provider } from "react-redux";
+import store from "@/redux/store";
+import { Providers } from "./Providers";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -22,9 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${nunito.variable} antialiased`}>
-        <Modal actionLabel="Submit" isOpen title="Login" />
-        <Navbar />
-        {children}
+        <Providers>
+          {/* <Modal actionLabel="Submit" isOpen title="Login" /> */}
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
