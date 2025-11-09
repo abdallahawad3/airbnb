@@ -12,6 +12,10 @@ import type { RootState } from "@/redux/store";
 import { onClose } from "@/redux/features/register/registerSlice";
 import Heading from "../ui/Heading";
 import Input from "../ui/Input";
+import MyButton from "../ui/MyButton";
+import { FcGoogle } from "react-icons/fc";
+import { BsGithub } from "react-icons/bs";
+import Link from "next/link";
 type FormType = z.infer<typeof REGISTER_SCHEMA>;
 
 const RegisterModal = () => {
@@ -92,6 +96,38 @@ const RegisterModal = () => {
       </form>
     </div>
   );
+
+  const modalFooter = (
+    <div className="flex flex-col gap-4 mt-3">
+      <hr />
+      <MyButton
+        onClick={() => {}}
+        outline={true}
+        label="Continue with Goggle"
+        icon={FcGoogle}
+      />
+      <MyButton
+        onClick={() => {}}
+        outline={true}
+        label="Continue with Github"
+        icon={BsGithub}
+      />
+
+      <div className="text-neutral-500 text-center mt-4 font-light">
+        <div className="">
+          Already have an account?{" "}
+          <button
+            onClick={() => {
+              //TODO ==> Close Register modal and show the login modal
+            }}
+            className="text-neutral-800 cursor-pointer hover:underline"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+  );
   return (
     <Modal
       disable={loading}
@@ -101,6 +137,7 @@ const RegisterModal = () => {
       onClose={handleClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
+      footer={modalFooter}
     />
   );
 };
