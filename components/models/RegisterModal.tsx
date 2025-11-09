@@ -15,7 +15,6 @@ import Input from "../ui/Input";
 import MyButton from "../ui/MyButton";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
-import Link from "next/link";
 type FormType = z.infer<typeof REGISTER_SCHEMA>;
 
 const RegisterModal = () => {
