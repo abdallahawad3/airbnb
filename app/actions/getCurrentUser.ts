@@ -1,6 +1,5 @@
 import { auth } from "@/libs/auth";
 import prisma from "@/libs/prismadb";
-
 export default async function getCurrentUser() {
   try {
     const session = await auth();
@@ -15,7 +14,12 @@ export default async function getCurrentUser() {
     if (!currentUser) {
       return null;
     }
-    return currentUser;
+    return {
+      ...currentUser,
+      createdAt: currentUser.createdAt.toISOString(),
+      updatedAt: currentUser.updatedAt.toISOString(),
+      emailVerified: currentUser.emailVerified?.toISOString() || null,
+    };
   } catch (error) {
     console.error("Error in getCurrentUser:", error);
     return null;

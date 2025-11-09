@@ -7,12 +7,11 @@ import MenuItem from "./MenuItem";
 import { useAppDispatch } from "@/hooks/redux";
 import { onOpen } from "@/redux/features/register/registerSlice";
 import { onOpenLoginModal } from "@/redux/features/login/loginSlice";
-import type { User } from "@/app/generated/prisma/client";
 import { signOut } from "next-auth/react";
-// import { signOut } from "@/libs/auth";
+import type { safeUser } from "@/types";
 
 interface UserMenuProps {
-  currentUser?: User | null;
+  currentUser?: safeUser | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {

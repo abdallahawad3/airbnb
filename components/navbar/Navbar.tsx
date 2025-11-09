@@ -3,9 +3,10 @@ import Container from "../Container";
 import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
+import type { safeUser } from "@/types";
 
 interface NavbarProps {
-  currentUser?: User | null;
+  currentUser?: safeUser | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
