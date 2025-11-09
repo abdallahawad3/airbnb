@@ -1,87 +1,82 @@
 "use client";
-// import { AiFillGithub } from "react-icons/ai";
-// import { FcGoogle } from "react-icons/fc";
-// import { useCallback, useState } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { REGISTER_SCHEMA } from "@/validation";
-import type z from "zod";
-import Modal from "./Modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import type { RootState } from "@/redux/store";
-import { onClose, registerUser } from "@/redux/features/register/registerSlice";
-import Heading from "../ui/Heading";
+import Modal from "./Modal";
+import {
+  onCloseLoginModal,
+  setLoading,
+} from "@/redux/features/login/loginSlice";
+import { Controller, useForm } from "react-hook-form";
+import type z from "zod";
+import type { LOGIN_SCHEMA } from "@/validation";
 import Input from "../ui/Input";
+import Heading from "../ui/Heading";
 import MyButton from "../ui/MyButton";
-import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
-type FormType = z.infer<typeof REGISTER_SCHEMA>;
-
-const RegisterModal = () => {
-  const { loading, isOpen } = useAppSelector(
-    (state: RootState) => state.register
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react"; // <-- client-side helper
+type LoginFormData = z.infer<typeof LOGIN_SCHEMA>;
+const LoginModal = () => {
+  const { isOpenLoginModal, loading } = useAppSelector(
+    (state: RootState) => state.login
   );
+  const router = useRouter();
   const dispatch = useAppDispatch();
+
+  const handelClose = () => {
+    dispatch(onCloseLoginModal());
+  };
+
   const {
-    register,
     handleSubmit,
     control,
+    register,
     formState: { errors },
-  } = useForm<FormType>({
-    resolver: zodResolver(REGISTER_SCHEMA),
+    reset,
+  } = useForm<LoginFormData>({
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit: SubmitHandler<FormType> = (data) => {
-    dispatch(registerUser(data))
-      .unwrap()
-      .then(() => {
-        dispatch(onClose());
-      })
-      .catch((error) => {
-        toast.error(error || "Something went wrong!");
-      });
+  const onSubmit = (data: LoginFormData) => {
+    dispatch(setLoading(true));
+    signIn("credentials", { ...data, redirect: false }).then((callback) => {
+      if (callback?.error) {
+        toast.error("Invalid credentials");
+      }
+      if (callback?.ok && !callback?.error) {
+        toast.success("Logged in successfully");
+        dispatch(onCloseLoginModal());
+        dispatch(setLoading(false));
+        reset({
+          email: "",
+          password: "",
+        });
+      }
+      router.refresh();
+    });
   };
 
-  const handleClose = () => {
-    dispatch(onClose());
-  };
-
-  // Body ot the modal
-  const bodyContent = (
+  const body = (
     <div className="flex flex-col gap-4">
-      <Heading title="Welcome to Airbnb" subTitle="Create An Account" />
+      <Heading title="Welcome to Airbnb" subTitle="Login in to your account" />
       <form className="space-y-4">
-        <Controller
-          rules={{ required: true }}
-          control={control}
-          name="username"
-          render={() => (
-            <Input
-              label="Username"
-              error={errors.username}
-              name="username"
-              type="text"
-              field={register("username")}
-            />
-          )}
-        />
         <Controller
           rules={{ required: true }}
           control={control}
           name="email"
           render={() => (
             <Input
+              label="Email"
               error={errors.email}
               name="email"
               type="email"
-              label="Email"
               field={register("email")}
+              disabled={loading}
             />
           )}
         />
@@ -96,6 +91,7 @@ const RegisterModal = () => {
               type="password"
               label="Password"
               field={register("password")}
+              disabled={loading}
             />
           )}
         />
@@ -111,24 +107,26 @@ const RegisterModal = () => {
         outline={true}
         label="Continue with Goggle"
         icon={FcGoogle}
+        disabled={loading}
       />
       <MyButton
         onClick={() => {}}
         outline={true}
         label="Continue with Github"
         icon={BsGithub}
+        disabled={loading}
       />
 
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="">
-          Already have an account?{" "}
+          New to Airbnb?{" "}
           <button
             onClick={() => {
               //TODO ==> Close Register modal and show the login modal
             }}
             className="text-neutral-800 cursor-pointer hover:underline"
           >
-            Login
+            Create an account
           </button>
         </div>
       </div>
@@ -136,16 +134,16 @@ const RegisterModal = () => {
   );
   return (
     <Modal
-      disable={loading}
-      isOpen={isOpen}
-      title="Register"
-      actionLabel="continue"
-      onClose={handleClose}
+      actionLabel="Login"
+      onClose={handelClose}
+      isOpen={isOpenLoginModal}
+      title="Login"
       onSubmit={handleSubmit(onSubmit)}
-      body={bodyContent}
+      disable={loading}
+      body={body}
       footer={modalFooter}
     />
   );
 };
 
-export default RegisterModal;
+export default LoginModal;

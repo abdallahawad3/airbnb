@@ -8,3 +8,8 @@ export const REGISTER_SCHEMA = z.object({
   email: z.email("Enter valid email"),
   password: z.string().min(6),
 });
+
+export const LOGIN_SCHEMA = z.object({
+  email: z.email("Enter valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});

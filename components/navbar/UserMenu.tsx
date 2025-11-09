@@ -4,19 +4,25 @@ import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
 import { useCallback, useState } from "react";
 import MenuItem from "./MenuItem";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import type { RootState } from "@/redux/store";
+import { useAppDispatch } from "@/hooks/redux";
 import { onOpen } from "@/redux/features/register/registerSlice";
+import { onOpenLoginModal } from "@/redux/features/login/loginSlice";
+import type { User } from "@/app/generated/prisma/client";
+import { signOut } from "next-auth/react";
+// import { signOut } from "@/libs/auth";
 
-const UserMenu = () => {
+interface UserMenuProps {
+  currentUser?: User | null;
+}
+
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const { isOpen: openModal } = useAppSelector(
-    (state: RootState) => state.register
-  );
+
   const toggleOpen = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
+
   return (
     <div className="relative">
       <div className="flex items-center gap-3">
@@ -39,15 +45,37 @@ const UserMenu = () => {
       {isOpen ? (
         <div className="absolute rounded-xl  shadow-md w-[20vw] bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
-            <>
-              <MenuItem onClick={() => {}} label="Login" />
-              <MenuItem
-                onClick={() => {
-                  dispatch(onOpen());
-                }}
-                label="Register"
-              />
-            </>
+            {currentUser ? (
+              <>
+                <MenuItem onClick={() => {}} label="My Trips" />
+                <MenuItem onClick={() => {}} label="My Favorites" />
+                <MenuItem onClick={() => {}} label="My Reservations" />
+                <MenuItem onClick={() => {}} label="My Properties" />
+                <MenuItem onClick={() => {}} label="Airbnb My Home" />
+                <hr />
+                <MenuItem
+                  onClick={() => {
+                    signOut();
+                  }}
+                  label="Logout"
+                />
+              </>
+            ) : (
+              <>
+                <MenuItem
+                  onClick={() => {
+                    dispatch(onOpenLoginModal());
+                  }}
+                  label="Login"
+                />
+                <MenuItem
+                  onClick={() => {
+                    dispatch(onOpen());
+                  }}
+                  label="Register"
+                />
+              </>
+            )}
           </div>
         </div>
       ) : null}

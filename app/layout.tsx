@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import { Providers } from "./Providers";
 import RegisterModal from "@/components/models/RegisterModal";
+import LoginModal from "@/components/models/LoginModal";
+import getCurrentUser from "./actions/getCurrentUser";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -15,17 +17,19 @@ export const metadata: Metadata = {
   description: "An Airbnb clone built with Next.js",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const currentUser = await getCurrentUser();
   return (
     <html lang="en">
       <body className={`${nunito.variable} antialiased`}>
         <Providers>
           <RegisterModal />
-          <Navbar />
+          <LoginModal />
+          <Navbar currentUser={currentUser} />
           {children}
         </Providers>
       </body>
