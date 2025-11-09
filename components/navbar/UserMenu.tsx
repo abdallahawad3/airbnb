@@ -11,7 +11,7 @@ import { signOut } from "next-auth/react";
 import type { safeUser } from "@/types";
 
 interface UserMenuProps {
-  currentUser?: safeUser | null;
+  currentUser?: (safeUser & { image?: string }) | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
@@ -37,7 +37,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar />
+            <Avatar image={currentUser?.image} />
           </div>
         </div>
       </div>

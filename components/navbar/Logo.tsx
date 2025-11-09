@@ -5,6 +5,7 @@ const Logo = () => {
   const router = useRouter();
   return (
     <Image
+      loading="eager"
       src={"/images/logo.webp"}
       alt="Logo"
       className="hidden md:block cursor-pointer object-contain"

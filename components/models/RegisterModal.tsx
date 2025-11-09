@@ -16,6 +16,7 @@ import MyButton from "../ui/MyButton";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 type FormType = z.infer<typeof REGISTER_SCHEMA>;
 
 const RegisterModal = () => {
@@ -31,7 +32,7 @@ const RegisterModal = () => {
   } = useForm<FormType>({
     resolver: zodResolver(REGISTER_SCHEMA),
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
     },
@@ -60,14 +61,14 @@ const RegisterModal = () => {
         <Controller
           rules={{ required: true }}
           control={control}
-          name="username"
+          name="name"
           render={() => (
             <Input
-              label="Username"
-              error={errors.username}
-              name="username"
+              label="name"
+              error={errors.name}
+              name="name"
               type="text"
-              field={register("username")}
+              field={register("name")}
             />
           )}
         />
@@ -107,13 +108,13 @@ const RegisterModal = () => {
     <div className="flex flex-col gap-4 mt-3">
       <hr />
       <MyButton
-        onClick={() => {}}
+        onClick={() => signIn("google")}
         outline={true}
-        label="Continue with Goggle"
+        label="Continue with Google"
         icon={FcGoogle}
       />
       <MyButton
-        onClick={() => {}}
+        onClick={() => signIn("github")}
         outline={true}
         label="Continue with Github"
         icon={BsGithub}

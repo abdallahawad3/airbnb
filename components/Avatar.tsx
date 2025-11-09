@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 
-const Avatar = () => {
+const Avatar = ({ image }: { image?: string | null }) => {
   return (
     <Image
-      src={"/images/placeholder.webp"}
+      loading="eager"
+      src={image || "/images/placeholder.webp"}
       className="rounded-full"
       alt="Avatar"
       height={30}

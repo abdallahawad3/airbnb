@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // lib/auth.ts
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
@@ -15,8 +16,16 @@ const loginSchema = z.object({
 });
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma as any),
   providers: [
+    GitHub({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     // ──────── Credentials Provider ────────
     Credentials({
       id: "credentials",
@@ -43,7 +52,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             select: {
               id: true,
               email: true,
-              username: true,
+              name: true,
               image: true,
               hashedPassword: true,
             },
@@ -60,7 +69,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return {
             id: user.id,
             email: user.email,
-            username: user.username ?? null,
+            name: user.name ?? null,
             image: user.image ?? null,
           };
         } catch (error) {
