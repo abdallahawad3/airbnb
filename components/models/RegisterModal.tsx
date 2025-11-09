@@ -9,7 +9,7 @@ import type z from "zod";
 import Modal from "./Modal";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import type { RootState } from "@/redux/store";
-import { onClose } from "@/redux/features/register/registerSlice";
+import { onClose, registerUser } from "@/redux/features/register/registerSlice";
 import Heading from "../ui/Heading";
 import Input from "../ui/Input";
 import MyButton from "../ui/MyButton";
@@ -37,8 +37,7 @@ const RegisterModal = () => {
   });
 
   const onSubmit: SubmitHandler<FormType> = (data) => {
-    console.log(data);
-    // TODO ==> CALL ENDPOINT HERE
+    dispatch(registerUser(data));
   };
 
   const handleClose = () => {
