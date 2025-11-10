@@ -9,6 +9,8 @@ import { onOpen } from "@/redux/features/register/registerSlice";
 import { onOpenLoginModal } from "@/redux/features/login/loginSlice";
 import { signOut } from "next-auth/react";
 import type { safeUser } from "@/types";
+import toast from "react-hot-toast";
+import { openRentModal } from "@/redux/features/rent/rentSlice";
 
 interface UserMenuProps {
   currentUser?: (safeUser & { image?: string }) | null;
@@ -22,12 +24,28 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     setIsOpen((prev) => !prev);
   }, []);
 
+  // Rent function can be added here
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      toast.error("You must be logged in to rent a property.", {
+        duration: 3000,
+        position: "top-center",
+        className: "!w-100",
+      });
+      dispatch(onOpenLoginModal());
+      return;
+    }
+
+    // TODO: Open rent modal
+    dispatch(openRentModal());
+  }, [currentUser, dispatch]);
+
   return (
     <div className="relative">
       <div className="flex items-center gap-3">
         <div
-          onClick={() => {}}
-          className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
+          onClick={onRent}
+          className="hidden md:block text-sm font-semibold py-3 px-4 border border-gray-300 rounded-full hover:bg-neutral-100 transition cursor-pointer"
         >
           Airbnb Your Home
         </div>
@@ -50,7 +68,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 <MenuItem onClick={() => {}} label="My Favorites" />
                 <MenuItem onClick={() => {}} label="My Reservations" />
                 <MenuItem onClick={() => {}} label="My Properties" />
-                <MenuItem onClick={() => {}} label="Airbnb My Home" />
+                <MenuItem
+                  onClick={() => {
+                    dispatch(openRentModal());
+                  }}
+                  label="Airbnb My Home"
+                />
                 <hr />
                 <MenuItem
                   onClick={() => {

@@ -5,14 +5,13 @@ const Logo = () => {
   const router = useRouter();
   return (
     <Image
-      loading="eager"
-      src={"/images/logo.jpg"}
+      src="/images/logo.jpg"
       alt="Logo"
-      className="hidden md:block cursor-pointer aspect-5/2"
       width={100}
       height={50}
+      className="hidden md:block cursor-pointer w-24 h-auto"
       onClick={() => router.push("/")}
-      objectFit="contain"
+      loading="eager"
     />
   );
 };

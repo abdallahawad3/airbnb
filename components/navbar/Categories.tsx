@@ -108,7 +108,7 @@ const Categories = () => {
   const params = useSearchParams();
   return (
     <Container>
-      <div className="pt-4 flex items-center justify-between overflow-x-auto overflow-y-hidden">
+      <div className="flex items-center justify-between overflow-x-auto overflow-y-hidden mt-1 border-t border-t-gray-300 ">
         {/* Categories content goes here */}
         {CATEGORIES.map((item) => (
           <Fragment key={item.label}>

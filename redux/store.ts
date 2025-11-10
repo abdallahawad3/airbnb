@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import registerSlice from "./features/register/registerSlice";
 import loginSlice from "./features/login/loginSlice";
+import rentSlice from "./features/rent/rentSlice";
 
 export const store = configureStore({
   reducer: {
     register: registerSlice,
     login: loginSlice,
+    rent: rentSlice,
   },
 });
 

@@ -6,6 +6,7 @@ import { Providers } from "./Providers";
 import RegisterModal from "@/components/models/RegisterModal";
 import LoginModal from "@/components/models/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
+import RentModal from "@/components/models/RentModal";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -29,6 +30,7 @@ export default async function RootLayout({
         <Providers>
           <RegisterModal />
           <LoginModal />
+          <RentModal />
           <Navbar currentUser={currentUser} />
           {children}
         </Providers>
