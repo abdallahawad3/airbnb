@@ -100,6 +100,53 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 
   callbacks: {
+    // 🧩 هذا هو الجزء الأهم: ربط الحسابات إذا كان المستخدم موجودًا بالفعل
+    async signIn({ user, account }) {
+      if (!user?.email || !account) return false;
+      const existingUser = await prisma.user.findUnique({
+        where: { email: user.email },
+      });
+
+      if (existingUser) {
+        // تحقق مما إذا كان الـ provider مربوط بالفعل
+        const linkedAccount = await prisma.account.findFirst({
+          where: {
+            userId: existingUser.id,
+            provider: account.provider,
+          },
+        });
+
+        // لو مش مربوط، نربطه الآن
+        if (!linkedAccount) {
+          await prisma.account.create({
+            data: {
+              userId: existingUser.id,
+              type: account.type,
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+              refresh_token: account.refresh_token,
+              access_token: account.access_token,
+              expires_at: account.expires_at,
+              token_type: account.token_type,
+              scope: account.scope,
+              id_token: account.id_token,
+              session_state:
+                typeof account.session_state === "string"
+                  ? account.session_state
+                  : account.session_state
+                  ? String(account.session_state)
+                  : null,
+            },
+          });
+        }
+
+        // ✅ نربط المستخدم الحالي الموجود بالـ provider الجديد
+        user.id = existingUser.id;
+      }
+
+      return true; // السماح بتسجيل الدخول
+    },
+
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
