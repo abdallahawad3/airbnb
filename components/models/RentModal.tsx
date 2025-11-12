@@ -16,6 +16,8 @@ import Counter from "../ui/inputs/Counter";
 import ImageUpload from "../ui/inputs/ImageUpload";
 import Input from "../ui/inputs/Input";
 import toast from "react-hot-toast";
+import type { RootState } from "@/redux/store";
+import { addListing } from "@/redux/features/listings/listingSlice";
 
 enum STEPS {
   CATEGORY = 0,
@@ -27,12 +29,18 @@ enum STEPS {
 }
 
 const RentModal = () => {
-  const { isRentModalOpen, loading } = useAppSelector((state) => state.rent);
+  const { isRentModalOpen } = useAppSelector((state) => state.rent);
+  const [isError, setIsError] = useState(false);
   const dispatch = useAppDispatch();
+  const { loading: listingLoading } = useAppSelector(
+    (state: RootState) => state.listing
+  );
   const [step, setStep] = useState(STEPS.CATEGORY);
-  const { register, handleSubmit, setValue, watch, control } =
+  const { register, handleSubmit, setValue, watch, control, reset } =
     useForm<FieldValues>({
       defaultValues: {
+        title: "",
+        description: "",
         category: "",
         location: null,
         guestCount: 1,
@@ -40,8 +48,6 @@ const RentModal = () => {
         bathroomCount: 1,
         imageSrc: "",
         price: 1,
-        title: "",
-        description: "",
       },
     });
 
@@ -189,20 +195,20 @@ const RentModal = () => {
           subTitle="Short and sweet works best!"
         />
         <br />
-        <Controller
+        <Input
+          name="title"
+          field={register("title")}
+          type="text"
+          required={true}
+          label="Title"
+        />
+        {/* <Controller
           name="title"
           control={control}
-          render={({ fieldState: { error } }) => (
-            <Input
-              name="title"
-              field={register("title")}
-              type="text"
-              error={error}
-              required={true}
-              label="Title"
-            />
-          )}
-        />
+          render={({ field, fieldState: { error } }) => (
+           
+          )} */}
+        {/* /> */}
         <br />
         <Controller
           name="description"
@@ -235,11 +241,7 @@ const RentModal = () => {
           render={({ fieldState: { error } }) => (
             <Input
               name="price"
-              field={register("price", {
-                valueAsNumber: true,
-                min: 1,
-                max: 10000,
-              })}
+              field={register("price")}
               type="number"
               error={error}
               required={true}
@@ -252,39 +254,79 @@ const RentModal = () => {
   }
 
   const onSubmit = handleSubmit((data) => {
-    if (step !== STEPS.PRICE) {
-      if (step == STEPS.CATEGORY) {
-        if (!data.category) {
-          toast.error("Please select a category");
-          return;
-        }
-      } else if (step == STEPS.LOCATION) {
-        if (!data.location) {
-          toast.error("Please select a location");
-          return;
-        }
-      } else if (step == STEPS.INFO) {
-        if (!data.guestCount || !data.roomCount || !data.bathroomCount) {
-          toast.error("Please provide guest, room, and bathroom counts");
-          return;
-        }
-      } else if (step == STEPS.IMAGES) {
-        if (!data.imageSrc) {
-          toast.error("Please upload an image of your place");
-          return;
-        }
-      } else if (step == STEPS.DESCRIPTION) {
-        if (!data.title || !data.description) {
-          toast.error("Please provide a title and description for your place");
-          return;
-        }
+    setIsError(false);
+    if (step === STEPS.CATEGORY) {
+      if (!data.category) {
+        toast.error("Please select a category");
+        setIsError(true);
+        return;
       }
-
-      return onNext();
     }
 
-    console.log(data);
+    if (step === STEPS.LOCATION) {
+      if (!data.location) {
+        setIsError(true);
+        toast.error("Please select a location");
+        return;
+      }
+    }
+
+    if (step === STEPS.INFO) {
+      if (!data.guestCount || !data.roomCount || !data.bathroomCount) {
+        toast.error("Please provide guest, room, and bathroom counts");
+        setIsError(true);
+        return;
+      }
+    }
+
+    if (step === STEPS.IMAGES) {
+      if (!data.imageSrc) {
+        setIsError(true);
+        toast.error("Please upload an image of your place");
+        return;
+      }
+    }
+
+    if (step === STEPS.DESCRIPTION) {
+      if (!data.title || !data.description) {
+        setIsError(true);
+        toast.error("Please provide a title and description for your place");
+        return;
+      }
+    }
+
+    // If this is NOT the final step (PRICE), go to next
+    if (step !== STEPS.PRICE) {
+      onNext();
+      return;
+    }
+    if (!isError) {
+      dispatch(
+        addListing({
+          bathroomCount: data.bathroomCount,
+          category: data.category,
+          description: data.description,
+          guestCount: data.guestCount,
+          imageSrc: data.imageSrc,
+          location: data.location.value,
+          price: data.price,
+          roomCount: data.roomCount,
+          title: data.title,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          setTimeout(() => {
+            dispatch(closeRentModal());
+            reset();
+          }, 2000);
+        })
+        .catch(() => {
+          toast.error("Failed to create listing. Please try again.");
+        });
+    }
   });
+
   return (
     <Modal
       isOpen={isRentModalOpen}
@@ -296,7 +338,7 @@ const RentModal = () => {
       actionLabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
-      disable={loading}
+      disable={listingLoading}
       body={bodyContent}
     />
   );
