@@ -9,7 +9,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import type z from "zod";
 import type { LOGIN_SCHEMA } from "@/validation";
-import Input from "../ui/Input";
+import Input from "../ui/inputs/Input";
 import Heading from "../ui/Heading";
 import MyButton from "../ui/MyButton";
 import { BsGithub } from "react-icons/bs";

@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import type { RootState } from "@/redux/store";
 import { onClose, registerUser } from "@/redux/features/register/registerSlice";
 import Heading from "../ui/Heading";
-import Input from "../ui/Input";
+import Input from "../ui/inputs/Input";
 import MyButton from "../ui/MyButton";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";

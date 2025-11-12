@@ -88,11 +88,6 @@ const Modal: React.FC<IProps> = ({
               {/* Footer */}
               <div className="flex flex-col gap-2 p-6">
                 <div className="flex items-center gap-4 w-full">
-                  <MyButton
-                    disabled={disable}
-                    onClick={handleSubmit}
-                    label={actionLabel}
-                  />
                   {secondaryActionLabel && (
                     <MyButton
                       outline
@@ -101,6 +96,11 @@ const Modal: React.FC<IProps> = ({
                       label={secondaryActionLabel}
                     />
                   )}
+                  <MyButton
+                    disabled={disable}
+                    onClick={handleSubmit}
+                    label={actionLabel}
+                  />
                 </div>
 
                 {footer}
