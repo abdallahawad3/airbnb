@@ -12,6 +12,7 @@ import { useForm, type FieldValues } from "react-hook-form";
 import CountrySelect from "../ui/inputs/CountrySelect";
 import dynamic from "next/dynamic";
 import Counter from "../ui/inputs/Counter";
+import ImageUpload from "../ui/inputs/ImageUpload";
 
 enum STEPS {
   CATEGORY = 0,
@@ -53,7 +54,7 @@ const RentModal = () => {
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
-
+  const imageSrc = watch("imageSrc");
   const Map = useMemo(
     () => dynamic(() => import("../Map"), { ssr: false }),
     [location]
@@ -175,6 +176,23 @@ const RentModal = () => {
       </div>
     );
   }
+  if (step === STEPS.IMAGES) {
+    bodyContent = (
+      <div>
+        <Heading
+          title="Add a photo of your place"
+          subTitle="Show guests what your place looks like!"
+        />
+        <br />
+        <ImageUpload
+          onChange={(value) => {
+            setCustomValue("imageSrc", value);
+          }}
+          value={imageSrc}
+        />
+      </div>
+    );
+  }
   return (
     <Modal
       isOpen={isRentModalOpen}
@@ -188,7 +206,6 @@ const RentModal = () => {
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
       disable={loading}
       body={bodyContent}
-      // footer={<div>Rent Modal Footer</div>}
     />
   );
 };
