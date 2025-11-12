@@ -8,7 +8,7 @@ interface IProps {
   type: string;
   placeholder?: string;
   field: UseFormRegisterReturn;
-  name: keyof z.infer<typeof REGISTER_SCHEMA>;
+  name: keyof z.infer<typeof REGISTER_SCHEMA> | string;
   error?: FieldError;
   disabled?: boolean;
   required?: boolean;

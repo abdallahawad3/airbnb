@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -8,11 +9,13 @@ import { Fragment, useMemo, useState } from "react";
 import Heading from "../ui/Heading";
 import { CATEGORIES } from "../navbar/Categories";
 import CategoryInput from "../ui/inputs/CategoryInput";
-import { useForm, type FieldValues } from "react-hook-form";
+import { Controller, useForm, type FieldValues } from "react-hook-form";
 import CountrySelect from "../ui/inputs/CountrySelect";
 import dynamic from "next/dynamic";
 import Counter from "../ui/inputs/Counter";
 import ImageUpload from "../ui/inputs/ImageUpload";
+import Input from "../ui/inputs/Input";
+import toast from "react-hot-toast";
 
 enum STEPS {
   CATEGORY = 0,
@@ -27,27 +30,20 @@ const RentModal = () => {
   const { isRentModalOpen, loading } = useAppSelector((state) => state.rent);
   const dispatch = useAppDispatch();
   const [step, setStep] = useState(STEPS.CATEGORY);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-    reset,
-  } = useForm<FieldValues>({
-    defaultValues: {
-      category: "",
-      location: null,
-      guestCount: 1,
-      roomCount: 1,
-      bathroomCount: 1,
-      imageSrc: "",
-      price: 1,
-      title: "",
-      description: "",
-    },
-  });
+  const { register, handleSubmit, setValue, watch, control } =
+    useForm<FieldValues>({
+      defaultValues: {
+        category: "",
+        location: null,
+        guestCount: 1,
+        roomCount: 1,
+        bathroomCount: 1,
+        imageSrc: "",
+        price: 1,
+        title: "",
+        description: "",
+      },
+    });
 
   const category = watch("category");
   const location = watch("location");
@@ -118,10 +114,6 @@ const RentModal = () => {
       </div>
     </div>
   );
-
-  //! -------------------------- //
-  // ** Location Step Content ** //
-  //! --------------------------- //
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
@@ -138,10 +130,6 @@ const RentModal = () => {
       </div>
     );
   }
-
-  // !----------------------- //
-  // ** Info Step Content ** //
-  // !----------------------- //
   if (step === STEPS.INFO) {
     bodyContent = (
       <div>
@@ -193,6 +181,110 @@ const RentModal = () => {
       </div>
     );
   }
+  if (step === STEPS.DESCRIPTION) {
+    bodyContent = (
+      <div>
+        <Heading
+          title="How would you describe your place?"
+          subTitle="Short and sweet works best!"
+        />
+        <br />
+        <Controller
+          name="title"
+          control={control}
+          render={({ fieldState: { error } }) => (
+            <Input
+              name="title"
+              field={register("title")}
+              type="text"
+              error={error}
+              required={true}
+              label="Title"
+            />
+          )}
+        />
+        <br />
+        <Controller
+          name="description"
+          control={control}
+          render={({ fieldState: { error } }) => (
+            <Input
+              name="description"
+              field={register("description")}
+              type="textarea"
+              error={error}
+              required={true}
+              label="Description"
+            />
+          )}
+        />
+      </div>
+    );
+  }
+  if (step === STEPS.PRICE) {
+    bodyContent = (
+      <div>
+        <Heading
+          title="Now, set your price"
+          subTitle="How much do you charge per night?"
+        />
+        <br />
+        <Controller
+          name="price"
+          control={control}
+          render={({ fieldState: { error } }) => (
+            <Input
+              name="price"
+              field={register("price", {
+                valueAsNumber: true,
+                min: 1,
+                max: 10000,
+              })}
+              type="number"
+              error={error}
+              required={true}
+              label="Price per night (USD)"
+            />
+          )}
+        />
+      </div>
+    );
+  }
+
+  const onSubmit = handleSubmit((data) => {
+    if (step !== STEPS.PRICE) {
+      if (step == STEPS.CATEGORY) {
+        if (!data.category) {
+          toast.error("Please select a category");
+          return;
+        }
+      } else if (step == STEPS.LOCATION) {
+        if (!data.location) {
+          toast.error("Please select a location");
+          return;
+        }
+      } else if (step == STEPS.INFO) {
+        if (!data.guestCount || !data.roomCount || !data.bathroomCount) {
+          toast.error("Please provide guest, room, and bathroom counts");
+          return;
+        }
+      } else if (step == STEPS.IMAGES) {
+        if (!data.imageSrc) {
+          toast.error("Please upload an image of your place");
+          return;
+        }
+      } else if (step == STEPS.DESCRIPTION) {
+        if (!data.title || !data.description) {
+          toast.error("Please provide a title and description for your place");
+          return;
+        }
+      }
+
+      return onNext();
+    }
+
+    console.log(data);
+  });
   return (
     <Modal
       isOpen={isRentModalOpen}
@@ -200,7 +292,7 @@ const RentModal = () => {
       onClose={() => {
         dispatch(closeRentModal());
       }}
-      onSubmit={onNext}
+      onSubmit={onSubmit}
       actionLabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
