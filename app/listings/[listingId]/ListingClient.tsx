@@ -51,8 +51,7 @@ const ListingClient: FC<ListingClientProps> = ({
       toast.success("Reservation created successfully!");
       setDateRange(initialDate);
 
-      // TODO: Navigate to trips page or refresh reservations
-      router.refresh();
+      router.push("/trips");
     });
   }, [currentUser, dispatch, totalPrice, dateRange, listing.id, router]);
 
