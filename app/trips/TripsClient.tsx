@@ -22,9 +22,9 @@ const TripsClient: React.FC<TripsClientProps> = ({
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
 
-  const onCancel = async (id: string) => {
-    setDeletingId(id);
-    await AXIOS_INSTANCE.delete(`/reservations/${id}`)
+  const onCancel = async (reservationId: string) => {
+    setDeletingId(reservationId);
+    await AXIOS_INSTANCE.delete(`/reservations/${reservationId}`)
       .then(() => {
         toast.success("Reservation cancelled");
         router.refresh();
