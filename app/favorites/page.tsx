@@ -5,8 +5,8 @@ import getCurrentUser from "../actions/getCurrentUser";
 import FavoriteClient from "./FavoriteClient";
 
 const page = async () => {
-  const currentUser = await getCurrentUser();
-  const listings = await getFavorites();
+  const currentUser = (await getCurrentUser()) || null;
+  const listings = (await getFavorites()) ?? [];
   if (listings?.length == 0) {
     return (
       <ClientOnly>
@@ -19,11 +19,6 @@ const page = async () => {
   }
   return (
     <ClientOnly>
-      <Heading
-        title="Favorites"
-        subTitle="Looks like you have no favorite listings."
-      />
-
       <FavoriteClient listings={listings} currentUser={currentUser} />
     </ClientOnly>
   );

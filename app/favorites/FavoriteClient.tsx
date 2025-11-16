@@ -5,7 +5,7 @@ import type { safeListing, safeUser } from "@/types";
 
 interface FavoriteClientProps {
   listings: safeListing[];
-  currentUser?: safeUser;
+  currentUser?: safeUser | null;
 }
 
 const FavoriteClient = ({ listings, currentUser }: FavoriteClientProps) => {
