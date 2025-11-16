@@ -5,7 +5,7 @@ const Logo = () => {
   const router = useRouter();
   return (
     <Image
-      src="/images/logo.jpg"
+      src="/images/logo.webp"
       alt="Logo"
       width={100}
       height={50}

@@ -54,13 +54,13 @@ const CategoryBox: FC<CategoryBoxProps> = ({
   return (
     <div
       onClick={handleClick}
-      className={`flex flex-col items-center justify-center gap-2 p-3 cursor-pointer hover:scale-105 transition ${
+      className={`flex flex-col items-center justify-center gap-2 p-2 cursor-pointer hover:scale-105 transition ${
         isSelected
           ? "border-b-2 border-black text-neutral-800"
           : "border-transparent text-neutral-500"
       }`}
     >
-      <IconType size={24} />
+      <IconType size={14} />
       <div className="text-sm font-medium">{label}</div>
     </div>
   );

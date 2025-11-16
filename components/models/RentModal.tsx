@@ -17,8 +17,8 @@ import ImageUpload from "../ui/inputs/ImageUpload";
 import Input from "../ui/inputs/Input";
 import toast from "react-hot-toast";
 import type { RootState } from "@/redux/store";
-import { addListing } from "@/redux/features/listings/listingSlice";
-
+import { addListing } from "@/app/actions/addListing";
+import { useRouter } from "next/navigation";
 enum STEPS {
   CATEGORY = 0,
   LOCATION = 1,
@@ -29,6 +29,7 @@ enum STEPS {
 }
 
 const RentModal = () => {
+  const router = useRouter();
   const { isRentModalOpen } = useAppSelector((state) => state.rent);
   const [isError, setIsError] = useState(false);
   const dispatch = useAppDispatch();
@@ -202,13 +203,6 @@ const RentModal = () => {
           required={true}
           label="Title"
         />
-        {/* <Controller
-          name="title"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-           
-          )} */}
-        {/* /> */}
         <br />
         <Controller
           name="description"
@@ -253,7 +247,7 @@ const RentModal = () => {
     );
   }
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     setIsError(false);
     if (step === STEPS.CATEGORY) {
       if (!data.category) {
@@ -301,29 +295,16 @@ const RentModal = () => {
       return;
     }
     if (!isError) {
-      dispatch(
-        addListing({
-          bathroomCount: data.bathroomCount,
-          category: data.category,
-          description: data.description,
-          guestCount: data.guestCount,
-          imageSrc: data.imageSrc,
-          location: data.location.value,
-          price: data.price,
-          roomCount: data.roomCount,
-          title: data.title,
-        })
-      )
-        .unwrap()
-        .then(() => {
-          setTimeout(() => {
-            dispatch(closeRentModal());
-            reset();
-          }, 2000);
-        })
-        .catch(() => {
-          toast.error("Failed to create listing. Please try again.");
-        });
+      try {
+        await addListing(data);
+        toast.success("Listing created successfully!");
+        router.refresh();
+        reset();
+        setStep(STEPS.CATEGORY);
+        dispatch(closeRentModal());
+      } catch (err) {
+        console.log("FAILED:", err);
+      }
     }
   });
 
