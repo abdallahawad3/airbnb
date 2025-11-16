@@ -2,8 +2,8 @@ import Container from "@/components/Container";
 import ClientOnly from "./_clientOnly";
 import EmptyState from "@/components/EmptyState";
 import { getListing } from "./actions/getListing";
-import ListingCard from "@/components/ui/ListingCard";
 import getCurrentUser from "./actions/getCurrentUser";
+import ListingCard from "@/components/ui/listings/ListingCard";
 
 const page = async () => {
   const listing = await getListing();

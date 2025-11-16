@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo, type FC } from "react";
 import { format } from "date-fns";
 import Image from "next/image";
-import HeartButton from "../HeartButton";
-import MyButton from "./MyButton";
+import HeartButton from "@/components/HeartButton";
+import MyButton from "../MyButton";
+
 interface ListingCardProps {
   data: safeListing;
   reservation?: Reservation;
@@ -64,7 +65,7 @@ const ListingCard: FC<ListingCardProps> = ({
   return (
     <div
       onClick={() => {
-        router.push(`/listing/${data.id}`);
+        router.push(`/listings/${data.id}`);
       }}
       className="col-span-1 cursor-pointer group shadow-sm rounded-lg overflow-hidden p-1"
     >
