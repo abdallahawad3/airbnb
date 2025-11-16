@@ -11,6 +11,7 @@ import { signOut } from "next-auth/react";
 import type { safeUser } from "@/types";
 import toast from "react-hot-toast";
 import { openRentModal } from "@/redux/features/rent/rentSlice";
+import { useRouter } from "next/navigation";
 
 interface UserMenuProps {
   currentUser?: (safeUser & { image?: string }) | null;
@@ -19,7 +20,7 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
   const toggleOpen = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
@@ -64,7 +65,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem onClick={() => {}} label="My Trips" />
+                <MenuItem
+                  onClick={() => {
+                    router.push("/trips");
+                  }}
+                  label="My Trips"
+                />
                 <MenuItem onClick={() => {}} label="My Favorites" />
                 <MenuItem onClick={() => {}} label="My Reservations" />
                 <MenuItem onClick={() => {}} label="My Properties" />

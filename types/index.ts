@@ -19,4 +19,5 @@ export type safeReservation = Omit<
   createdAt: string;
   startDate: string;
   endDate: string;
+  listing: safeListing; // 👈 أضف هذا
 };
