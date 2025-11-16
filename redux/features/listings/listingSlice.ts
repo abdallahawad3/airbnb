@@ -17,7 +17,6 @@ const initialState: IListing = {
 export const addListing = createAsyncThunk(
   "listing/addListing",
   async (listingData: any, { rejectWithValue }) => {
-    console.log(listingData);
     try {
       const response = await AXIOS_INSTANCE.post("/listings", {
         title: listingData.title,

@@ -14,7 +14,6 @@ const initialState: IRegisterState = {
 export const registerUser = createAsyncThunk(
   "registerUser",
   async (userData: { name: string; email: string; password: string }) => {
-    console.log(userData);
     const { data, statusText } = await AXIOS_INSTANCE.post(
       "/register",
       userData

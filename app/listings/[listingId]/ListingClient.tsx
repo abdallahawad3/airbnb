@@ -7,8 +7,7 @@ import ListingReservation from "@/components/ui/listings/ListingReservation";
 import { AXIOS_INSTANCE } from "@/config/axios.config";
 import { useAppDispatch } from "@/hooks/redux";
 import { onOpenLoginModal } from "@/redux/features/login/loginSlice";
-import type { safeListing, safeUser } from "@/types";
-import type { Reservation } from "@prisma/client";
+import type { safeListing, safeReservation, safeUser } from "@/types";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState, type FC } from "react";
@@ -20,7 +19,7 @@ interface ListingClientProps {
     user: safeUser;
   };
   currentUser?: safeUser | null;
-  reservations?: Reservation[];
+  reservations?: safeReservation[];
 }
 
 const initialDate: Range = {
@@ -43,7 +42,6 @@ const ListingClient: FC<ListingClientProps> = ({
     if (!currentUser) {
       return dispatch(onOpenLoginModal());
     }
-
     AXIOS_INSTANCE.post("/reservations", {
       totalPrice,
       startDate: dateRange.startDate,
