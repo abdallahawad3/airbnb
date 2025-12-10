@@ -1,5 +1,5 @@
 import getCurrentUser from "./getCurrentUser";
-
+import prisma from "@/libs/prismadb";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface SearchParams {
   userId?: string;
