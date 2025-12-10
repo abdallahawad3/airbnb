@@ -183,20 +183,4 @@ This project demonstrates proficiency in:
 
 ---
 
-## 📌 **Hashtags**
-
-#WebDevelopment #NextJS #React #TypeScript #FullStack #MongoDB #Prisma #TailwindCSS #JavaScript #WebDesign #SoftwareDevelopment #FrontendDevelopment #BackendDevelopment #Programming #Coding #TechProject #DeveloperLife #WebApp #OpenSource #Portfolio
-
----
-
-## 🎬 **Call to Action**
-
-Check out the code and feel free to provide feedback! Always open to connecting with fellow developers and discussing web development.
-
-🔗 GitHub: [Your GitHub Link]  
-💼 Portfolio: [Your Portfolio Link]  
-📧 Contact: [Your Email]
-
----
-
 **Built with ❤️ using Next.js, React, and TypeScript**
