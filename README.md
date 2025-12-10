@@ -1,36 +1,202 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LinkedIn Post - Airbnb Clone Project
 
-## Getting Started
+## 🏠 Project Description
 
-First, run the development server:
+Excited to share my latest full-stack project - a feature-rich **Airbnb Clone** built with modern web technologies! This application replicates the core functionality of Airbnb, allowing users to list properties, make reservations, and manage their bookings seamlessly.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🔐 **Authentication & Authorization**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Multi-provider authentication** with NextAuth v5
+- Google OAuth integration for seamless sign-in
+- GitHub OAuth support
+- Credential-based authentication with secure password hashing (bcryptjs)
+- Protected routes and session management
+- Prisma Adapter for database integration
 
-## Learn More
+### 🏡 **Property Listings Management**
 
-To learn more about Next.js, take a look at the following resources:
+- **Create and publish property listings** with detailed information
+- Upload property images via Cloudinary integration
+- Set pricing, capacity (guest count, rooms, bathrooms)
+- Add comprehensive property descriptions
+- Categorize properties across 16+ categories:
+  - 🏖️ Beach, 🏔️ Mountains, 🏰 Castles, 🏝️ Islands
+  - ⛷️ Skiing, 🏊 Pools, 🌵 Desert, 🏕️ Camping
+  - 🧑‍🌾 Farms, 🏚️ Barns, 🌊 Lakes, ❄️ Arctic
+  - 🕳️ Caves, 💎 Luxury, 🏘️ Modern, 🌾 Countryside
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📍 **Location & Map Integration**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Interactive map integration using **React Leaflet**
+- Country selection with `world-countries` library
+- Visual property location display
+- Geographic coordinates tracking
 
-## Deploy on Vercel
+### 📅 **Reservation System**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Book properties** with custom date ranges
+- Real-time availability checking using `react-date-range`
+- Automatic price calculation based on stay duration
+- View and manage your trips
+- Cancel reservations
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### ❤️ **Favorites & Wishlist**
+
+- Add properties to favorites
+- Manage personal wishlist
+- Quick access to saved properties
+- Heart button toggle functionality
+
+### 🎨 **User Interface & Experience**
+
+- **Responsive design** with Tailwind CSS v4
+- Modern, clean interface inspired by Airbnb
+- Loading states with React Spinners
+- Toast notifications for user feedback (react-hot-toast)
+- Smooth transitions and animations
+- Mobile-first approach
+
+### 🔍 **Advanced Search & Filtering**
+
+- Filter by category (Beach, Mountains, Luxury, etc.)
+- Location-based search
+- Date range filtering
+- Guest capacity filtering
+- Query string-based URL parameters
+
+### 👤 **User Dashboard**
+
+- **My Properties** - Manage your listings
+- **My Trips** - View upcoming and past reservations
+- **My Favorites** - Access saved properties
+- **My Reservations** - Manage bookings on your properties
+
+### 🛠️ **Property Management**
+
+- Edit and update listings
+- Delete properties
+- View reservation statistics
+- Cancel guest reservations
+
+---
+
+## 💻 **Tech Stack**
+
+### **Frontend**
+
+- ⚛️ **Next.js 16** (App Router)
+- ⚛️ **React 19** with React DOM
+- 🎨 **Tailwind CSS v4** for styling
+- 🗺️ **React Leaflet** for maps
+- 📅 **React Date Range** for date selection
+- 🎯 **Redux Toolkit** for state management
+- 📋 **React Hook Form** with Zod validation
+- 🖼️ **Next Cloudinary** for image management
+
+### **Backend**
+
+- 🚀 **Next.js API Routes**
+- 🔒 **NextAuth v5** for authentication
+- 🗄️ **Prisma ORM** with MongoDB
+- 🔐 **bcryptjs** for password hashing
+- ✅ **Zod** for schema validation
+
+### **Database**
+
+- 🍃 **MongoDB** with Prisma Client
+- Prisma Accelerate for enhanced performance
+
+### **Development Tools**
+
+- 📘 **TypeScript** for type safety
+- 🎯 **ESLint** for code quality
+- 🔧 **PostCSS** for CSS processing
+
+---
+
+## 📊 **Database Schema**
+
+### **Models:**
+
+- **User** - User profiles with authentication data
+- **Account** - OAuth provider accounts
+- **Listing** - Property listings with details
+- **Reservation** - Booking information and dates
+
+### **Relationships:**
+
+- Users can create multiple listings
+- Users can make multiple reservations
+- Users can favorite multiple properties
+- Listings can have multiple reservations
+
+---
+
+## 🎯 **Key Functionalities**
+
+✅ User registration and login (Email/Password, Google, GitHub)  
+✅ Create, read, update, delete (CRUD) property listings  
+✅ Upload and manage property images  
+✅ Interactive map for location selection  
+✅ Advanced search with multiple filters  
+✅ Date-based reservation system  
+✅ Favorite/unfavorite properties  
+✅ Manage trips and reservations  
+✅ Responsive design for all devices  
+✅ Real-time form validation  
+✅ Optimistic UI updates  
+✅ Server-side rendering (SSR)  
+✅ Protected API routes
+
+---
+
+## 🌟 **What I Learned**
+
+- Building scalable applications with Next.js 16 App Router
+- Implementing authentication with multiple providers
+- State management with Redux Toolkit
+- Database design and relationships with Prisma
+- Image optimization and cloud storage
+- Form handling and validation patterns
+- Map integration in React applications
+- TypeScript best practices
+- Responsive design principles
+
+---
+
+## 🔗 **Project Highlights**
+
+This project demonstrates proficiency in:
+
+- Full-stack development
+- Modern React patterns and hooks
+- Database design and ORM usage
+- Authentication and authorization
+- RESTful API design
+- Cloud services integration
+- State management
+- Type-safe development
+
+---
+
+## 📌 **Hashtags**
+
+#WebDevelopment #NextJS #React #TypeScript #FullStack #MongoDB #Prisma #TailwindCSS #JavaScript #WebDesign #SoftwareDevelopment #FrontendDevelopment #BackendDevelopment #Programming #Coding #TechProject #DeveloperLife #WebApp #OpenSource #Portfolio
+
+---
+
+## 🎬 **Call to Action**
+
+Check out the code and feel free to provide feedback! Always open to connecting with fellow developers and discussing web development.
+
+🔗 GitHub: [Your GitHub Link]  
+💼 Portfolio: [Your Portfolio Link]  
+📧 Contact: [Your Email]
+
+---
+
+**Built with ❤️ using Next.js, React, and TypeScript**
