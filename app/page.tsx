@@ -1,12 +1,21 @@
 import Container from "@/components/Container";
 import ClientOnly from "./_clientOnly";
 import EmptyState from "@/components/EmptyState";
-import { getListing, type IListing } from "./actions/getListing";
+import { getListing } from "./actions/getListing";
 import getCurrentUser from "./actions/getCurrentUser";
 import ListingCard from "@/components/ui/listings/ListingCard";
+interface SearchParams {
+  category?: string;
+  location?: string;
+  guestCount?: string;
+  roomCount?: string;
+  bathroomCount?: string;
+  startDate?: string;
+  endDate?: string;
+}
 
 interface HomeProps {
-  searchParams: IListing;
+  searchParams: SearchParams;
 }
 export const dynamic = "force-dynamic";
 

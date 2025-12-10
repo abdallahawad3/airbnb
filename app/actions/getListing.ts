@@ -1,21 +1,21 @@
 import getCurrentUser from "./getCurrentUser";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface IListing {
+interface SearchParams {
   userId?: string;
-  guestCount?: number;
-  roomCount?: number;
-  bathroomCount?: number;
+  category?: string;
+  location?: string;
+  guestCount?: string;
+  roomCount?: string;
+  bathroomCount?: string;
   startDate?: string;
   endDate?: string;
-  locationValue?: string;
-  category?: string;
 }
+
 export const dynamic = "force-dynamic";
 
-export async function getListing(params: IListing) {
+export async function getListing(params: SearchParams) {
   const user = await getCurrentUser();
-  console.log(user);
   try {
     const {
       userId,
@@ -23,7 +23,7 @@ export async function getListing(params: IListing) {
       category,
       endDate,
       guestCount,
-      locationValue,
+      location,
       roomCount,
       startDate,
     } = params;
@@ -50,8 +50,8 @@ export async function getListing(params: IListing) {
       query.bathroomCount = { gte: +bathroomCount };
     }
 
-    if (locationValue) {
-      query.locationValue = locationValue;
+    if (location) {
+      query.location = location;
     }
 
     if (startDate && endDate) {
