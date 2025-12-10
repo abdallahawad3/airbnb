@@ -4,23 +4,22 @@ import EmptyState from "@/components/EmptyState";
 import { getListing } from "./actions/getListing";
 import getCurrentUser from "./actions/getCurrentUser";
 import ListingCard from "@/components/ui/listings/ListingCard";
-interface SearchParams {
-  category?: string;
-  location?: string;
-  guestCount?: string;
-  roomCount?: string;
-  bathroomCount?: string;
-  startDate?: string;
-  endDate?: string;
-}
 
 interface HomeProps {
-  searchParams: SearchParams;
+  searchParams: Promise<{
+    category?: string;
+    locationValue?: string;
+    guestCount?: string;
+    roomCount?: string;
+    bathroomCount?: string;
+    startDate?: string;
+    endDate?: string;
+  }>;
 }
 export const dynamic = "force-dynamic";
 
 const page = async ({ searchParams }: HomeProps) => {
-  const listing = await getListing(searchParams);
+  const listing = await getListing(await searchParams);
   const currentUser = await getCurrentUser();
   if (listing?.length === 0) {
     return (
