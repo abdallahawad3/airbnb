@@ -4,7 +4,6 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import { create } from "domain";
 import toast from "react-hot-toast";
 
 interface ILoginState {
