@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "An Airbnb clone built with Next.js",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({
   children,
 }: Readonly<{

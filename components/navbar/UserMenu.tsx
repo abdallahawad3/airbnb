@@ -14,7 +14,7 @@ import { openRentModal } from "@/redux/features/rent/rentSlice";
 import { useRouter } from "next/navigation";
 
 interface UserMenuProps {
-  currentUser?: (safeUser & { image?: string }) | null;
+  currentUser?: safeUser | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {

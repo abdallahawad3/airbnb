@@ -8,6 +8,7 @@ import ListingCard from "@/components/ui/listings/ListingCard";
 interface HomeProps {
   searchParams: IListing;
 }
+export const dynamic = "force-dynamic";
 
 const page = async ({ searchParams }: HomeProps) => {
   const listing = await getListing(searchParams);

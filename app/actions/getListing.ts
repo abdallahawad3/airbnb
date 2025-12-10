@@ -11,6 +11,8 @@ export interface IListing {
   locationValue?: string;
   category?: string;
 }
+export const dynamic = "force-dynamic";
+
 export async function getListing(params: IListing) {
   const user = await getCurrentUser();
   console.log(user);
